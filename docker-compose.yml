@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./test.db:/app/test.db
+    environment:
+      - DB_PATH=/app/test.db
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - SWAGGER_JSON=/swagger/swagger.json
+    volumes:
+      - ./docs:/swagger
+
