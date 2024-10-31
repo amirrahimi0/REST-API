@@ -1,0 +1,534 @@
+basePath: /
+definitions:
+  auth.Credentials:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Book:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      id:
+        type: integer
+      isbn:
+        type: string
+      published_year:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.Filter:
+    properties:
+      author:
+        type: string
+      genre:
+        type: string
+      published_year:
+        type: string
+      sort_order:
+        type: string
+      title:
+        type: string
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      membership_date:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for a Golang project.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Golang Project API
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: This is the main page.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Welcome to the main page!
+          schema:
+            type: string
+      summary: Main Page
+      tags:
+      - main
+  /admin:
+    get:
+      description: Admin page accessible only to authenticated bookkeepers
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Welcome to the admin page!
+          schema:
+            type: string
+      summary: Admin page
+      tags:
+      - auth
+  /bookkeepers/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new bookkeeper with the provided details
+      parameters:
+      - description: Bookkeeper
+        in: body
+        name: bookkeeper
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Bookkeeper created successfully
+          schema:
+            type: string
+      summary: Create a new bookkeeper
+      tags:
+      - bookkeepers
+  /bookkeepers/delete:
+    delete:
+      description: Delete a bookkeeper by their ID
+      parameters:
+      - description: Bookkeeper ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Bookkeeper deleted successfully
+          schema:
+            type: string
+      summary: Delete a bookkeeper
+      tags:
+      - bookkeepers
+  /bookkeepers/read:
+    get:
+      description: Get the details of a bookkeeper by their ID
+      parameters:
+      - description: Bookkeeper ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Read a bookkeeper by ID
+      tags:
+      - bookkeepers
+  /bookkeepers/update:
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing bookkeeper
+      parameters:
+      - description: Bookkeeper
+        in: body
+        name: bookkeeper
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Bookkeeper updated successfully
+          schema:
+            type: string
+      summary: Update a bookkeeper
+      tags:
+      - bookkeepers
+  /books:
+    get:
+      description: Get a list of all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: List all books
+      tags:
+      - books
+  /books/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with the provided details
+      parameters:
+      - description: Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Book created successfully
+          schema:
+            type: string
+      summary: Create a new book
+      tags:
+      - books
+  /books/delete:
+    delete:
+      description: Delete a book by its ID
+      parameters:
+      - description: Book ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Book deleted successfully
+          schema:
+            type: string
+      summary: Delete a book
+      tags:
+      - books
+  /books/filter/advanced:
+    post:
+      description: Filter books based on multiple criteria
+      parameters:
+      - description: Filter
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/models.Filter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Advanced Filter Books
+      tags:
+      - books
+  /books/filter/author:
+    get:
+      description: Filter books by author
+      parameters:
+      - description: Author
+        in: query
+        name: author
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Filter Books by Author
+      tags:
+      - books
+  /books/filter/genre:
+    get:
+      description: Filter books by genre
+      parameters:
+      - description: Genre
+        in: query
+        name: genre
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Filter Books by Genre
+      tags:
+      - books
+  /books/filter/year:
+    get:
+      description: Filter books by published year
+      parameters:
+      - description: Published Year
+        in: query
+        name: published_year
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Filter Books by Published Year
+      tags:
+      - books
+  /books/read:
+    get:
+      description: Get the details of a book by its ID
+      parameters:
+      - description: Book ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Read a book by ID
+      tags:
+      - books
+  /books/search/title:
+    get:
+      description: Search books by title
+      parameters:
+      - description: Title
+        in: query
+        name: title
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Search Books by Title
+      tags:
+      - books
+  /books/update:
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing book
+      parameters:
+      - description: Book
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Book updated successfully
+          schema:
+            type: string
+      summary: Update a book
+      tags:
+      - books
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user and return a JWT token
+      parameters:
+      - description: User credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: User login
+      tags:
+      - auth
+  /login/bookkeepers:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a bookkeeper and return a JWT token
+      parameters:
+      - description: Bookkeeper credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      summary: Bookkeeper login
+      tags:
+      - auth
+  /secret:
+    get:
+      description: This is the secret page.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Welcome to the secret page!
+          schema:
+            type: string
+      summary: Secret Page
+      tags:
+      - secret
+  /user:
+    get:
+      description: User page accessible only to authenticated users
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Welcome to the user page!
+          schema:
+            type: string
+      summary: User page
+      tags:
+      - auth
+  /users/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided details
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            type: string
+      summary: Create a new user
+      tags:
+      - users
+  /users/delete:
+    delete:
+      description: Delete a user by their ID
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            type: string
+      summary: Delete a user
+      tags:
+      - users
+  /users/read:
+    get:
+      description: Get the details of a user by their ID
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Read a user by ID
+      tags:
+      - users
+  /users/update:
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User updated successfully
+          schema:
+            type: string
+      summary: Update a user
+      tags:
+      - users
+swagger: "2.0"
